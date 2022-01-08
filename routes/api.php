@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\CadastrarTransferenciaController;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'transferencia'], function () {
+    Route::post('/cadastrar', [CadastrarTransferenciaController::class, 'cadastrar']);
+});
+
+RateLimiter::for('api', function (Request $request) {
+    return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
 });

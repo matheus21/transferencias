@@ -5,7 +5,8 @@ ENV ROOT_PATH=/var/www
 WORKDIR $ROOT_PATH
 
 RUN apt update \
-    && chmod -R 777 $ROOT_PATH
+    && chmod -R 777 $ROOT_PATH \
+    && apt install unzip
 
 #Instalação Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
@@ -24,5 +25,4 @@ COPY . /var/www
 
 EXPOSE 8021
 
-CMD "composer install"
-CMD "php artisan serve --host=0.0.0.0"
+CMD bash -c "composer install && php artisan serve --host=0.0.0.0"
