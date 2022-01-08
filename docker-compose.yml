@@ -1,0 +1,32 @@
+version: '3'
+services:
+  transferencias-api:
+    container_name: transferencias-api
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8021:8000"
+    volumes:
+      - "./:/var/www"
+      - "./docker/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
+    environment:
+      PHP_IDE_CONFIG: "serverName=0.0.0.0"
+    networks:
+      - transferencias
+  transferencias-db:
+    image: mariadb:10.7
+    container_name: transferencias-db
+    ports:
+      - "3309:3306"
+    volumes:
+      - "./docker/mysql:/docker-entrypoint-initdb.d"
+    environment:
+      MYSQL_ROOT_PASSWORD: changeme
+    networks:
+      - transferencias
+networks:
+  transferencias:
+    driver: bridge
