@@ -14,6 +14,10 @@ return [
     |
     */
 
+    'transference' => [
+        'authorize' => env('AUTHORIZE_SERVICE_URL')
+    ],
+
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

@@ -13,6 +13,19 @@ class TransferenciaRepository implements TransferenciaRepositoryInterface
         return $this->model()::create($dados);
     }
 
+    public function obterTransferenciasPorStatus(int $status): Collection
+    {
+        return $this->model()::where(
+            'status',
+            $status
+        )->get();
+    }
+
+    public function atualizar(int $idTransferencia, array $dados): bool
+    {
+        return $this->model()::find($idTransferencia)->update($dados);
+    }
+
     public function model(): string
     {
         return Transferencia::class;
