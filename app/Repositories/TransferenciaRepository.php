@@ -13,6 +13,11 @@ class TransferenciaRepository implements TransferenciaRepositoryInterface
         return $this->model()::create($dados);
     }
 
+    public function model(): string
+    {
+        return Transferencia::class;
+    }
+
     public function obterTransferenciasPorStatus(int $status): Collection
     {
         return $this->model()::where(
@@ -26,11 +31,6 @@ class TransferenciaRepository implements TransferenciaRepositoryInterface
         return $this->model()::find($idTransferencia)->update($dados);
     }
 
-    public function model(): string
-    {
-        return Transferencia::class;
-    }
-
     public function obterTransferenciasNaoEfetivadasPorPagador(int $idCarteiraPagador): Collection
     {
         return $this->model()::where(
@@ -39,5 +39,10 @@ class TransferenciaRepository implements TransferenciaRepositoryInterface
                 ['status', config('constants.status_transferencias.nao_efetivada')]
             ]
         )->get();
+    }
+
+    public function obter(int $idTransferencia): ?Transferencia
+    {
+        return $this->model()::find($idTransferencia);
     }
 }

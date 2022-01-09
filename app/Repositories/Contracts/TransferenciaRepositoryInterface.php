@@ -14,4 +14,6 @@ interface TransferenciaRepositoryInterface extends Repository
     public function obterTransferenciasPorStatus(int $status): Collection;
 
     public function atualizar(int $idTransferencia, array $dados): bool;
+
+    public function obter(int $idTransferencia): ?Transferencia;
 }

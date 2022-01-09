@@ -5,7 +5,9 @@ namespace App\Providers;
 use App\Domain\Services\CadastrarTransferenciaService;
 use App\Domain\Services\Contracts\CadastrarTransferencia;
 use App\Domain\Services\Contracts\EfetivarTransferencias;
+use App\Domain\Services\Contracts\EstornarTransferencia;
 use App\Domain\Services\EfetivarTransferenciasService;
+use App\Domain\Services\EstornarTransferenciaService;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
@@ -22,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CadastrarTransferencia::class, CadastrarTransferenciaService::class);
 
         $this->app->bind(EfetivarTransferencias::class, EfetivarTransferenciasService::class);
+
+        $this->app->bind(EstornarTransferencia::class, EstornarTransferenciaService::class);
 
         $this->app->bind(ClientInterface::class, Client::class);
     }

@@ -44,7 +44,8 @@ class DatabaseSeeder extends Seeder
             [
                 'nome'        => $this->faker->company,
                 'cpf_cnpj'    => $this->faker->cnpj(false),
-                'tipo_pessoa' => config('constants.tipos_pessoas.pessoa_juridica')
+                'tipo_pessoa' => config('constants.tipos_pessoas.pessoa_juridica'),
+                'email'       => $this->faker->companyEmail
             ]
         );
         Carteira::factory()->create(
