@@ -34,7 +34,9 @@ class EfetivarTransferenciasService implements EfetivarTransferencias
 
     public function efetivar(): void
     {
-        $transferencias = $this->repository->obterTransferenciasPorStatus(config('constants.status_transferencias.nao_efetivada'));
+        $transferencias = $this->repository->obterTransferenciasPorFiltros(
+            ['status' => config('constants.status_transferencias.nao_efetivada')]
+        );
 
         foreach ($transferencias as $transferencia) {
             $this->validaAutorizacao($transferencia);

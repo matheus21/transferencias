@@ -68,11 +68,12 @@ class EfetivarTransferenciasServiceTest extends TestCase
         );
 
         $transferencias->first()->id = $this->faker->randomDigitNotZero();
+        $filtros                     = ['status' => config('constants.status_transferencias.nao_efetivada')];
 
         $novoSaldoPagador      = $carteiraPagador->saldo - $valorTransferencia;
         $novoSaldoBeneficiario = $carteiraBeneficiario->saldo + $valorTransferencia;
 
-        $this->repository->shouldReceive('obterTransferenciasPorStatus')->with(config('constants.status_transferencias.nao_efetivada'))->once()->andReturn($transferencias);
+        $this->repository->shouldReceive('obterTransferenciasPorFiltros')->with($filtros)->once()->andReturn($transferencias);
         $this->guzzleClient->shouldReceive('request')->withArgs(
             [
                 'get',
@@ -118,8 +119,9 @@ class EfetivarTransferenciasServiceTest extends TestCase
 
         $transferencias              = Transferencia::factory(1)->make();
         $transferencias->first()->id = $this->faker->randomDigitNotZero();
+        $filtros                     = ['status' => config('constants.status_transferencias.nao_efetivada')];
 
-        $this->repository->shouldReceive('obterTransferenciasPorStatus')->with(config('constants.status_transferencias.nao_efetivada'))->once()->andReturn($transferencias);
+        $this->repository->shouldReceive('obterTransferenciasPorFiltros')->with($filtros)->once()->andReturn($transferencias);
 
         $this->guzzleClient->shouldReceive('request')->withArgs(
             [
@@ -149,8 +151,9 @@ class EfetivarTransferenciasServiceTest extends TestCase
         $mockResposta->allows('getStatusCode');
 
         $transferencias = Transferencia::factory(1)->make();
+        $filtros        = ['status' => config('constants.status_transferencias.nao_efetivada')];
 
-        $this->repository->shouldReceive('obterTransferenciasPorStatus')->with(config('constants.status_transferencias.nao_efetivada'))->once()->andReturn($transferencias);
+        $this->repository->shouldReceive('obterTransferenciasPorFiltros')->with($filtros)->once()->andReturn($transferencias);
 
         $this->guzzleClient->shouldReceive('request')->withArgs(
             [

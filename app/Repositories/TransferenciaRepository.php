@@ -18,11 +18,10 @@ class TransferenciaRepository implements TransferenciaRepositoryInterface
         return Transferencia::class;
     }
 
-    public function obterTransferenciasPorStatus(int $status): Collection
+    public function obterTransferenciasPorFiltros(array $filtros): Collection
     {
         return $this->model()::where(
-            'status',
-            $status
+            $filtros
         )->get();
     }
 

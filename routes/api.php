@@ -3,6 +3,7 @@
 use App\Http\Controllers\CadastrarTransferenciaController;
 use App\Http\Controllers\EfetivarTransferenciasController;
 use App\Http\Controllers\EstornarTransferenciaController;
+use App\Http\Controllers\NotificarTransferenciasController;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -23,6 +24,7 @@ Route::group(['prefix' => 'transferencia'], function () {
     Route::post('/cadastrar', [CadastrarTransferenciaController::class, 'cadastrar']);
     Route::post('/efetivar', [EfetivarTransferenciasController::class, 'efetivar']);
     Route::put('/estornar/{id}', [EstornarTransferenciaController::class, 'estornar']);
+    Route::post('/notificar', [NotificarTransferenciasController::class, 'notificar']);
 });
 
 RateLimiter::for('api', function (Request $request) {
