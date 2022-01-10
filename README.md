@@ -46,8 +46,7 @@ docker run -it --rm -v $(pwd):/project -w /project jakzal/phpqa:php7.4 phpmd app
 
 ## Realizando transferências
 
-Ao executar o comando de seeders (`make seed`), o banco será populado com **três pessoas** e suas respectivas **
-carteiras**
+Ao executar o comando de seeders (`make seed`), o banco será populado com **três pessoas** e suas respectivas **carteiras**
 que podem ser utilizadas para realizar **transferências**.
 
 * As pessoas de **id** 1 e 2 possuem carteiras com **id** 1 e 2 respectivamente.
