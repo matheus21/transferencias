@@ -29,7 +29,7 @@ class EstornarTransferenciaController extends Controller
      *     operationId="EstornarTransferencia",
      *     tags={"Transferências"},
      *     summary="Estornar transferência",
-     *     description="Realiza o estorno de uma transferência",
+     *     description="Realiza o estorno de uma transferência, criando uma nova do beneficiário para o pagador.",
      *     @OA\Parameter(
      *         description="Identificador da transferência",
      *         in="path",

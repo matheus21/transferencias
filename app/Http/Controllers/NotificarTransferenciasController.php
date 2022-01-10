@@ -30,7 +30,7 @@ class NotificarTransferenciasController extends Controller
      *     operationId="NotiicarTransferencia",
      *     tags={"Transferências"},
      *     summary="Notificar transferências",
-     *     description="Notifica todas as transferências efetivadas",
+     *     description="Notifica todas as transferências efetivadas e ainda não notificadas.",
      *     @OA\Response(
      *         response=200,
      *         description="Sucesso ao notificar",

@@ -31,10 +31,9 @@ class CadastrarTransferenciaController extends Controller
      *     operationId="CadastrarTransferencia",
      *     tags={"Transferências"},
      *     summary="Cadastrar transferência",
-     *     description="Cadastra uma nova transferência entre pessoas",
+     *     description="Cadastra uma nova transferência entre pessoas.",
      *     @OA\RequestBody(
      *         required=true,
-     *         description="Campos do teste post",
      *         @OA\JsonContent(
      *             required={"valor", "pagador", "beneficiario"},
      *             @OA\Property(

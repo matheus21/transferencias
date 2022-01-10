@@ -29,7 +29,7 @@ class EfetivarTransferenciasController extends Controller
      *     operationId="EfetivarTransferencias",
      *     tags={"Transferências"},
      *     summary="Efetivar transferências",
-     *     description="Efetiva todas as transferências cadastradas",
+     *     description="Efetiva todas as transferências cadastradas e atualiza o saldo das carteiras.",
      *     @OA\Response(
      *         response=200,
      *         description="Sucesso ao efetivar",
