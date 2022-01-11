@@ -1,9 +1,9 @@
-CONTAINER_API=transferencias-api
 PHPUNIT_PATH=/var/www/vendor/phpunit/phpunit/phpunit
 PHPUNIT_XML=/var/www/phpunit.xml
 TESTS_PATH=/var/www/tests
+DOCKER_EXEC=docker exec -it transferencias-api
 
-.PHONY: init down migrate seed test test-cov docs
+.PHONY: init down migrate seed test test-cov mutation docs
 
 init:
 	docker-compose up -d
@@ -13,17 +13,20 @@ down:
 	docker-compose down
 
 migrate:
-	docker exec -it $(CONTAINER_API) php artisan migrate
+	@$(DOCKER_EXEC) php artisan migrate
 
 seed:
-	docker exec -it $(CONTAINER_API) php artisan db:seed
+	@$(DOCKER_EXEC) php artisan db:seed
 
 test:
-	docker exec -it $(CONTAINER_API) php $(PHPUNIT_PATH) --configuration $(PHPUNIT_XML) $(TESTS_PATH) --testdox
+	@$(DOCKER_EXEC) php $(PHPUNIT_PATH) --configuration $(PHPUNIT_XML) $(TESTS_PATH) --testdox
 
 test-cov:
-	docker exec -it $(CONTAINER_API) php -dxdebug.mode=coverage $(PHPUNIT_PATH) --configuration $(PHPUNIT_XML) $(TESTS_PATH) --coverage-text
+	@$(DOCKER_EXEC) php $(PHPUNIT_PATH) --configuration $(PHPUNIT_XML) $(TESTS_PATH) --coverage-text
+
+mutation:
+	@$(DOCKER_EXEC) infection --only-covered
 
 docs:
-	docker exec -it $(CONTAINER_API) php artisan l5-swagger:generate
+	@$(DOCKER_EXEC) php artisan l5-swagger:generate
 

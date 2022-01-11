@@ -72,6 +72,36 @@ class NotificarTransferenciasServiceTest extends TestCase
     /**
      * @test
      */
+    public function naoDeveNotificarTransferenciasQuandoMensagemNaoForRetornada()
+    {
+        $headers  = ['Content-Type' => 'application/json'];
+        $dados    = json_encode(['message']);
+        $resposta = new GuzzleResponse(Response::HTTP_OK, $headers, $dados);
+
+        $transferencias              = Transferencia::factory(1)->make();
+        $transferencias->first()->id = $this->faker->randomDigitNotZero();
+        $filtros                     = [
+            'status'              => config('constants.status_transferencias.efetivada'),
+            'notificacao_enviada' => false
+        ];
+
+        $this->repository->shouldReceive('obterTransferenciasPorFiltros')->with($filtros)->once()->andReturn($transferencias);
+
+        $this->guzzleClient->shouldReceive('request')->withArgs(
+            [
+                'get',
+                config('services.transference.notify')
+            ]
+        )->andReturn($resposta);
+
+        $this->repository->shouldNotReceive('atualizar');
+
+        $this->service->notificar();
+    }
+
+    /**
+     * @test
+     */
     public function naoDeveNotificarTransferenciaQuandoComunicacaoComServicoFalhar()
     {
         $mockRequisicao = \Mockery::mock(RequestInterface::class);

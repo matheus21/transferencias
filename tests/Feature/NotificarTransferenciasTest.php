@@ -35,6 +35,12 @@ class NotificarTransferenciasTest extends TestCase
             ]
         );
 
-        $this->post('/api/transferencia/notificar')->assertStatus(Response::HTTP_OK);
+        $retorno = $this->post('/api/transferencia/notificar');
+
+        $retorno->assertStatus(Response::HTTP_OK);
+        $this->assertArrayHasKey('mensagem', $retorno->getOriginalContent());
+        $this->assertEquals(
+            $retorno->getOriginalContent()['mensagem'], trans('messages.transferences.success.notified')
+        );
     }
 }

@@ -6,6 +6,7 @@ use App\Domain\Services\Contracts\NotificarTransferencias;
 use App\Repositories\Contracts\TransferenciaRepositoryInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use Illuminate\Support\Facades\Log;
 
 class NotificarTransferenciasService implements NotificarTransferencias
 {
@@ -44,7 +45,7 @@ class NotificarTransferenciasService implements NotificarTransferencias
             $retorno = $this->guzzleClient->request('get', config('services.transference.notify'));
             $retorno = json_decode($retorno->getBody()->getContents());
 
-            if ($retorno->message && $retorno->message === self::NOTIFICACAO_ENVIADA) {
+            if (isset($retorno->message) && $retorno->message === self::NOTIFICACAO_ENVIADA) {
                 $this->repository->atualizar($idTransferencia, ['notificacao_enviada' => true]);
             }
         } catch (ClientException $e) {

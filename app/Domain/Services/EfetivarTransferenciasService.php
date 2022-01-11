@@ -49,7 +49,7 @@ class EfetivarTransferenciasService implements EfetivarTransferencias
             $retorno = $this->guzzleClient->request('get', config('services.transference.authorize'));
             $retorno = json_decode($retorno->getBody()->getContents());
 
-            if ($retorno->message && $retorno->message === self::TRANSFERENCIA_AUTORIZADA) {
+            if (isset($retorno->message) && $retorno->message === self::TRANSFERENCIA_AUTORIZADA) {
                 $this->autorizaTransferencia($transferencia);
 
                 return;

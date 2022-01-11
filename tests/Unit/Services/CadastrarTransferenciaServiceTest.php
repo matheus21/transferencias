@@ -75,6 +75,42 @@ class CadastrarTransferenciaServiceTest extends TestCase
     /**
      * @test
      */
+    public function deveCadastrarUmaTransferenciaComValorIgualAoSaldoDaCarteira()
+    {
+        $pessoaPagadora     = Pessoa::factory()->make();
+        $pessoaPagadora->id = $this->faker->randomDigitNotZero();
+
+        $carteiraPagador     = Carteira::factory()->make(['pessoa_id' => $pessoaPagadora->id]);
+        $carteiraPagador->id = $this->faker->randomDigitNotZero();
+
+        $dados = [
+            'pagador'      => $carteiraPagador->id,
+            'beneficiario' => $this->faker->randomDigitNotZero(),
+            'valor'        => $carteiraPagador->saldo
+        ];
+
+        $dadosParaInserir = [
+            'carteira_pagador_id'      => $carteiraPagador->id,
+            'carteira_beneficiario_id' => $dados['beneficiario'],
+            'valor'                    => $dados['valor'],
+            'status'                   => config('constants.status_transferencias.nao_efetivada')
+        ];
+
+        $transferenciaInserida     = Transferencia::factory()->make($dadosParaInserir);
+        $transferenciaInserida->id = $this->faker->randomDigitNotZero();
+
+        $this->carteiraRepository->shouldReceive('obter')->with($carteiraPagador->id)->once()->andReturn($carteiraPagador);
+        $this->pessoaRepository->shouldReceive('obter')->with($pessoaPagadora->id)->once()->andReturn($pessoaPagadora);
+        $this->repository->shouldReceive('obterTransferenciasNaoEfetivadasPorPagador')->with($carteiraPagador->id)->once()->andReturn(new Collection());
+        $this->repository->shouldReceive('inserir')->with($dadosParaInserir)->andReturn($transferenciaInserida);
+
+        $retorno = $this->service->cadastrar($dados);
+        $this->assertEquals($retorno, $transferenciaInserida->toArray());
+    }
+
+    /**
+     * @test
+     */
     public function deveFalharAoCadastrarTransferenciaComPagadorPessoaJuridica()
     {
         $pessoaPagadora     = Pessoa::factory()->make(

@@ -5,24 +5,19 @@ namespace App\Http\Controllers;
 use App\Domain\Services\Contracts\NotificarTransferencias;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class NotificarTransferenciasController extends Controller
 {
     private NotificarTransferencias $service;
-    private DB $database;
 
     /**
      * @param NotificarTransferencias $service
-     * @param DB $database
      */
-    public function __construct(NotificarTransferencias $service, DB $database)
+    public function __construct(NotificarTransferencias $service)
     {
-        $this->service  = $service;
-        $this->database = $database;
+        $this->service = $service;
     }
-
 
     /**
      * @OA\Post(
@@ -43,17 +38,13 @@ class NotificarTransferenciasController extends Controller
     public function notificar(): JsonResponse
     {
         try {
-            $this->database::beginTransaction();
             $this->service->notificar();
-            $this->database::commit();
 
             return new JsonResponse(
                 ['mensagem' => trans('messages.transferences.success.notified')],
                 Response::HTTP_OK
             );
         } catch (HttpException $e) {
-            $this->database::rollBack();
-
             return new JsonResponse(['mensagem' => $e->getMessage()], $e->getStatusCode());
         }
     }

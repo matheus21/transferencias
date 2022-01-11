@@ -6,24 +6,19 @@ use App\Domain\Services\Contracts\CadastrarTransferencia;
 use App\Http\Requests\CadastrarTransferenciaRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CadastrarTransferenciaController extends Controller
 {
     private CadastrarTransferencia $service;
-    private DB $database;
 
     /**
      * @param CadastrarTransferencia $service
-     * @param DB $database
      */
-    public function __construct(CadastrarTransferencia $service, DB $database)
+    public function __construct(CadastrarTransferencia $service)
     {
-        $this->service  = $service;
-        $this->database = $database;
+        $this->service = $service;
     }
-
 
     /**
      * @OA\Post(
@@ -104,17 +99,13 @@ class CadastrarTransferenciaController extends Controller
     public function cadastrar(CadastrarTransferenciaRequest $request): JsonResponse
     {
         try {
-            $this->database::beginTransaction();
             $dados = $this->service->cadastrar($request->all());
-            $this->database::commit();
 
             return new JsonResponse(
                 ['mensagem' => trans('messages.transferences.success.registered'), 'dados' => $dados],
                 Response::HTTP_CREATED
             );
         } catch (HttpException $e) {
-            $this->database::rollBack();
-
             return new JsonResponse(['mensagem' => $e->getMessage()], $e->getStatusCode());
         }
     }

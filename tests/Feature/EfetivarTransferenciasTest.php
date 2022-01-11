@@ -34,6 +34,12 @@ class EfetivarTransferenciasTest extends TestCase
             ]
         );
 
-        $this->post('/api/transferencia/efetivar')->assertStatus(Response::HTTP_OK);
+        $retorno = $this->post('/api/transferencia/efetivar');
+
+        $retorno->assertStatus(Response::HTTP_OK);
+        $this->assertArrayHasKey('mensagem', $retorno->getOriginalContent());
+        $this->assertEquals(
+            $retorno->getOriginalContent()['mensagem'], trans('messages.transferences.success.effected')
+        );
     }
 }
